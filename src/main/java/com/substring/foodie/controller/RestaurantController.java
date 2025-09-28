@@ -28,9 +28,8 @@ public class RestaurantController {
     }
 
     @PutMapping("/{restaurantId}")
-    public ResponseEntity<RestaurantDto> update(
-            @RequestBody RestaurantDto restaurantDto,
-            @PathVariable String restaurantId) {
+    public ResponseEntity<RestaurantDto> update(@RequestBody RestaurantDto restaurantDto,
+                @PathVariable String restaurantId) {
         return ResponseEntity.status(HttpStatus.OK).body(restaurantService.update(restaurantDto, restaurantId));
 
     }
@@ -50,6 +49,6 @@ public class RestaurantController {
 
     //TODO: find all
     //TODO: find Name
-    //TODO; delete
+    //TODO: delete
 
 }

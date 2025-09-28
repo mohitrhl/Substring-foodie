@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -30,6 +32,8 @@ public class Restaurant {
     private boolean open = true;
 
     private String banner;
+
+    private LocalDateTime createdData;
 
     @ManyToOne
     private  User user;
