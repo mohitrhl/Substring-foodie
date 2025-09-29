@@ -31,7 +31,7 @@ public class RestaurantDto {
     private LocalTime closeTime;
     private boolean open = true;
 
-    @JsonIgnore
+
     private String banner;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy hh:mm:ss a")
