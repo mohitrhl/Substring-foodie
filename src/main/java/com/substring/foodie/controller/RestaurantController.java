@@ -20,15 +20,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
 
 @RestController
 @RequestMapping("/api/v1/restaurants")
 public class RestaurantController {
 
-    private String bannerFolderPath;
+    private String bannerFolderPath = "/path/to/banners/";
 
-    private Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final RestaurantService restaurantService;
 

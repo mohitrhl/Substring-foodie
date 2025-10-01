@@ -12,7 +12,6 @@ public class AuthControler {
     // logger declare::
     private Logger logger = LoggerFactory.getLogger(AuthControler.class);
 
-    //    @RequestMapping(value = "/login", method = RequestMethod.GET)
     @RequestMapping("/login")
     public Map<String, Object> login(@RequestBody Map<String, Object> data) {
 

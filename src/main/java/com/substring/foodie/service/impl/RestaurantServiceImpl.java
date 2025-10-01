@@ -11,7 +11,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -89,5 +91,10 @@ public class RestaurantServiceImpl implements RestaurantService
         Page<Restaurant> pageRestaurant = restaurantRepo.findByOpen(true, pageable);
         return pageRestaurant.
                 map(restaurant -> modelMapper.map(restaurant, RestaurantDto.class));
+    }
+
+    @Override
+    public RestaurantDto uploadBanner(MultipartFile file, String id) throws IOException {
+        return null;
     }
 }
