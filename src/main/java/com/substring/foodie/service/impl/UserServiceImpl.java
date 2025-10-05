@@ -1,15 +1,19 @@
 package com.substring.foodie.service.impl;
 
+import com.substring.foodie.config.AppConstants;
 import com.substring.foodie.dto.UserDto;
 import com.substring.foodie.entity.RoleEntity;
 import com.substring.foodie.entity.User;
 import com.substring.foodie.exception.ResourceNotFoundException;
+import com.substring.foodie.repository.RoleRepo;
 import com.substring.foodie.repository.UserRepo;
 import com.substring.foodie.service.UserService;
 import com.substring.foodie.util.Helper;
+import org.modelmapper.ModelMapper;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +27,19 @@ public class UserServiceImpl implements UserService {
 
     private UserRepo userRepo;
 
-    public UserServiceImpl(UserRepo userRepo, ResourcePatternResolver resourcePatternResolver) {
-        this.userRepo = userRepo;
+    private PasswordEncoder passwordEncoder;
+
+    private RoleRepo roleRepo;
+
+    private ModelMapper modelMapper;
+
+
+    public UserServiceImpl(UserRepo userRepo, ResourcePatternResolver resourcePatternResolver, PasswordEncoder passwordEncoder, RoleRepo roleRepo, ModelMapper modelMapper) {
         this.resourcePatternResolver = resourcePatternResolver;
+        this.userRepo = userRepo;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepo = roleRepo;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -33,6 +47,11 @@ public class UserServiceImpl implements UserService {
         //generate new id for user
         userDto.setId(Helper.generateRandomId());
         User user = convertUserDtoToUser(userDto);
+        //we are encoding password :
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // guest : role
+        RoleEntity roleGuest = roleRepo.findByName(AppConstants.getRoleGuest());
+        user.getRoleEntities().add(roleGuest);
         //save the user to database
         User savedUser = userRepo.save(user);
         return convertUserDtoToUserDto(savedUser);
@@ -87,26 +106,11 @@ public class UserServiceImpl implements UserService {
     }
 
     private User convertUserDtoToUser(UserDto userDto) {
-        User user = new User();
-        user.setId(userDto.getId());
-        user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
-        user.setPhoneNumber(userDto.getPhoneNumber());
-        user.setAddress(userDto.getAddress());
-
-        return user;
+        return modelMapper.map(userDto, User.class);
     }
 
     private UserDto convertUserDtoToUserDto(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setName(user.getName());
-        userDto.setEmail(user.getEmail());
-        userDto.setPassword(user.getPassword());
-        userDto.setPhoneNumber(user.getPhoneNumber());
-        userDto.setAddress(user.getAddress());
-        return userDto;
+        return modelMapper.map(user, UserDto.class);
 
     }
 

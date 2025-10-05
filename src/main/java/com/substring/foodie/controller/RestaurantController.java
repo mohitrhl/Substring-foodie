@@ -3,7 +3,6 @@ package com.substring.foodie.controller;
 import com.substring.foodie.dto.RestaurantDto;
 import com.substring.foodie.service.RestaurantService;
 import jakarta.annotation.Resource;
-import lombok.Value;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
@@ -13,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,6 +39,7 @@ public class RestaurantController {
 
     //add
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RestaurantDto> add(@RequestBody RestaurantDto restaurantDto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -70,6 +71,7 @@ public class RestaurantController {
 
     //api to handle restaurant banner
     @PostMapping("/upload-banner/{restaurantId}")
+    @PreAuthorize("hasAnyRole('GUEST','ADMIN')")
     public ResponseEntity<?> uploadFile(@RequestParam("banner") MultipartFile banner,
                                         @PathVariable String restaurantId) throws IOException {
         logger.info("Upload banner file:");

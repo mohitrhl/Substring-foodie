@@ -22,6 +22,8 @@ public class User {
     @Column(nullable = false)
     private String name;
 
+    private int age;
+
     @Column(unique = true, nullable = false)
     private String email;
 
@@ -41,12 +43,14 @@ public class User {
 
     private LocalDate createdDate;
 
+    private  boolean enabled=true;
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Restaurant> restaurants = new ArrayList<>();
 
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")

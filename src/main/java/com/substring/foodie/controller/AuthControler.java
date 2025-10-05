@@ -1,24 +1,62 @@
 package com.substring.foodie.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.substring.foodie.dto.JwtResponse;
+import com.substring.foodie.dto.LoginRequest;
+import com.substring.foodie.dto.UserDto;
+import com.substring.foodie.repository.UserRepo;
+import com.substring.foodie.security.JwtService;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+
+@RestController
+@RequestMapping("/api/v1/auth")
 public class AuthControler {
-    //login
-    // logger declare::
-    private Logger logger = LoggerFactory.getLogger(AuthControler.class);
 
-    @RequestMapping("/login")
-    public Map<String, Object> login(@RequestBody Map<String, Object> data) {
+    private final AuthenticationManager authenticationManager;
+    private final UserDetailsService userDetailsService;
+    private final JwtService jwtService;
 
-        String test=null;
-        test.length();//null pointer exception ko generate kiya hai
+    private UserRepo userRepo;
+    private ModelMapper modelMapper;
 
-        logger.info("login request: {}", data);
-        return data;
+    public AuthControler(AuthenticationManager authenticationManager, UserDetailsService userDetailsService, JwtService jwtService,UserRepo userRepo, ModelMapper modelMapper) {
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+        this.jwtService = jwtService;
+        this.userRepo = userRepo;
+        this.modelMapper = modelMapper;
+    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+
+
+        //created authentication
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password());
+        //authenticating
+        authenticationManager.authenticate(authentication);
+
+        //getting token
+        String jwtToken = jwtService.generateToken(loginRequest.email());
+        //getting userdetail
+        UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.email());
+
+        UserDto userDto =modelMapper.map( userRepo.findByEmail(userDetails.getUsername()).get(),UserDto.class);
+
+        JwtResponse build = JwtResponse.builder().token(jwtToken).user(userDto).build();
+        return ResponseEntity.ok(build);
+
     }
 }

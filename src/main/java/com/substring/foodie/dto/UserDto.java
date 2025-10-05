@@ -2,6 +2,9 @@ package com.substring.foodie.dto;
 
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,6 +16,8 @@ public class UserDto
 
     private String name;
 
+    private int age;
+
     private String email;
 
     private String password;
@@ -20,4 +25,6 @@ public class UserDto
     private String address;
 
     private String phoneNumber;
+
+    private List<RoleEntityDto> roleEntities=new ArrayList<>();
 }
