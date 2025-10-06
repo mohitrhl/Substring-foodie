@@ -51,6 +51,9 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         // guest : role
         RoleEntity roleGuest = roleRepo.findByName(AppConstants.getRoleGuest());
+        if (roleGuest == null) {
+            throw new ResourceNotFoundException("Role not found: " + AppConstants.getRoleGuest());
+        }
         user.getRoleEntities().add(roleGuest);
         //save the user to database
         User savedUser = userRepo.save(user);

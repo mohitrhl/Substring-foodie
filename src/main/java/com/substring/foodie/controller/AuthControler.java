@@ -48,14 +48,14 @@ public class AuthControler {
         //authenticating
         authenticationManager.authenticate(authentication);
 
-        //getting token
-        String jwtToken = jwtService.generateToken(loginRequest.email());
         //getting userdetail
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.email());
 
-        UserDto userDto =modelMapper.map( userRepo.findByEmail(userDetails.getUsername()).get(),UserDto.class);
-
-        JwtResponse build = JwtResponse.builder().token(jwtToken).user(userDto).build();
+        UserDto userDto = modelMapper.map(userRepo.findByEmail(userDetails.getUsername()).get(), UserDto.class);
+        //getting token
+        String jwtToken = jwtService.generateToken(userDto.getEmail(), true);
+        String refreshToken = jwtService.generateToken(userDto.getEmail(), false);
+        JwtResponse build = JwtResponse.builder().accessToken(jwtToken).refreshToken(refreshToken).user(userDto).build();
         return ResponseEntity.ok(build);
 
     }
