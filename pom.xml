@@ -70,6 +70,11 @@
             <version>3.0.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
         <!--		dependencies for jwt-->
 
         <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->

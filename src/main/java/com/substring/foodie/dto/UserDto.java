@@ -31,8 +31,7 @@ public class UserDto {
 
     private boolean enabled = true;
 
-    private List<RestaurantDto> restaurants = new ArrayList<>();
-
+//    private List<RestaurantDto> restaurants = new ArrayList<>();
 
     private List<AddressDto> addresses = new ArrayList<>();
 }

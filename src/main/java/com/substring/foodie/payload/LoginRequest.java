@@ -1,4 +1,4 @@
-package com.substring.foodie.dto;
+package com.substring.foodie.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddItemToCartRequest {
+public class LoginRequest {
 
-    private String productId;
-    private String userId;
-    private int quantity;
+    private  String email;
+    private  String password;
 }
