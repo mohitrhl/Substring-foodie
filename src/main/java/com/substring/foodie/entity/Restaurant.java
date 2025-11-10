@@ -27,7 +27,7 @@ public class Restaurant {
     private String description;
     private LocalTime openTime;
     private LocalTime closeTime;
-    private Boolean open = true;
+    private Boolean isOpen = true;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Address address;
