@@ -2,17 +2,20 @@ package com.substring.foodie.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "foodie_restaurant")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Restaurant {
 
     @Id
@@ -22,20 +25,27 @@ public class Restaurant {
 
     @Lob
     private String description;
-
-    private String address;
-
     private LocalTime openTime;
-
     private LocalTime closeTime;
+    private Boolean open = true;
 
-    private boolean open = true;
-
-    private String banner;
-
-    private LocalDateTime createdData;
-
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Address address;
     @ManyToOne
-    private  User user;
+    @JoinColumn(name = "user_id")
+    private User owner;
+
+    private boolean isActive = true;
+    private LocalDateTime createdDate;
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FoodItem> foodItems = new ArrayList<>();
+
+    private String bannerImageUrl;
+
+    @PrePersist
+    protected void onCreate() {
+        createdDate = LocalDateTime.now();
+    }
 
 }

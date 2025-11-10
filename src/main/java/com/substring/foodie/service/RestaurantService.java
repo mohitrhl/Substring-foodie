@@ -1,37 +1,28 @@
 package com.substring.foodie.service;
 
 import com.substring.foodie.dto.RestaurantDto;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface RestaurantService {
 
-    // add logic
-    RestaurantDto add(RestaurantDto restaurantDto);
-    RestaurantDto update(RestaurantDto restaurantDto , String id);
-    void delete(String delete);
+    RestaurantDto addRestaurant(RestaurantDto restaurant);
 
-    //single get
-    RestaurantDto get(String id);
+    RestaurantDto updateRestaurant(RestaurantDto restaurant, String userId);
 
+    void deleteRestaurant(String userId);
 
-    // get all
-    Page<RestaurantDto>getAll(Pageable pagable);
+    RestaurantDto getRestaurant(String userId);
 
-    List<RestaurantDto> searchByName(String keyword);
+    List<RestaurantDto> getRestaurants();
 
-    //----if extra service need
-    Page<RestaurantDto>getOpenRestaurants(Pageable pagable);
+    List<RestaurantDto> getByOwner(String ownerId);
 
-    // get single
+    List<RestaurantDto> searchByName(String nameKeyword);
 
-//    update
+    List<RestaurantDto> searchByAddress(String address);
 
-//    delete
+    List<RestaurantDto> getByIsActive(Boolean isActive);
 
-    RestaurantDto uploadBanner(MultipartFile file, String id) throws IOException;
+    List<RestaurantDto> getByOpen(Boolean isOpen);
 }

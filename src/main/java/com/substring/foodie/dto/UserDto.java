@@ -1,7 +1,12 @@
 package com.substring.foodie.dto;
 
-import lombok.*;
+import com.substring.foodie.enums.Role;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,22 +14,25 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class UserDto
-{
+public class UserDto {
     private String id;
 
     private String name;
-
-    private int age;
 
     private String email;
 
     private String password;
 
-    private String address;
+    private Role role; // ADMIN, USER, DELIVERY_BOY, RESTAURANT
 
-    private String phoneNumber;
+    private boolean isAvailable = true; // applicable for delivery boy
 
-    private List<RoleEntityDto> roleEntities=new ArrayList<>();
+    private LocalDate createdDate;
+
+    private boolean enabled = true;
+
+    private List<RestaurantDto> restaurants = new ArrayList<>();
+
+
+    private List<AddressDto> addresses = new ArrayList<>();
 }
